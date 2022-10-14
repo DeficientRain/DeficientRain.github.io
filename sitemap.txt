@@ -1,2 +1,6 @@
+hettps://deficentrain.github.io/friends/index.html
+hettps://deficentrain.github.io/about/index.html
+hettps://deficentrain.github.io/tags/index.html
+hettps://deficentrain.github.io/categories/index.html
 hettps://deficentrain.github.io/2022/10/12/hello-world/
 hettps://deficentrain.github.io
