@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>hettps://deficentrain.github.io/2022/12/22/di-yi-ci-pwn/</loc>
+    <lastmod>2022-12-22</lastmod>
+  </url>
+  <url>
     <loc>hettps://deficentrain.github.io/2022/10/12/hello-world/</loc>
     <lastmod>2022-10-12</lastmod>
   </url>
