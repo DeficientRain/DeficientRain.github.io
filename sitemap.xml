@@ -2,15 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>hettps://deficentrain.github.io/2022/12/22/di-yi-ci-pwn/</loc>
-    
-    <lastmod>2022-12-22</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>hettps://deficentrain.github.io/friends/index.html</loc>
     
     <lastmod>2022-10-14</lastmod>
@@ -63,13 +54,6 @@
     <priority>1.0</priority>
   </url>
 
-  
-  <url>
-    <loc>hettps://deficentrain.github.io/tags/Pwn/</loc>
-    <lastmod>2022-12-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
   
 
   
