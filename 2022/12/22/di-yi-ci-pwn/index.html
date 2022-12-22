@@ -514,8 +514,8 @@
 <h2 id="1-查壳"><a class="markdownIt-Anchor" href="#1-查壳">#</a> 1 查壳</h2>
 <p>利用 exeinfope 软件进行查壳，但本题是道入门题，并不需要查壳。（<s>才不是因为没下载呢。</s>）</p>
 <h2 id="2-检测安全机制"><a class="markdownIt-Anchor" href="#2-检测安全机制">#</a> 2 检测安全机制</h2>
-<p>利用 checksec + [filename] 进行检测（[checksec 简单讲解](<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/31449fdfe35f">Checksec - 简书 (jianshu.com)</a>)）</p>
-<p><img src="image-20221222155505271.png" class="lazyload placeholder" data-srcset="image-20221222155505271.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222155505271"></p>
+<p>利用 checksec + [filename] 进行检测（<a href="(https://www.jianshu.com/p/31449fdfe35f)">checksec 简单讲解</a>）</p>
+<p><img src="/.io//image-20221222155505271.png" class="lazyload placeholder" data-srcset="/.io//image-20221222155505271.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222155505271"></p>
 <p>简单地说：</p>
 <p>Stack：No canary found（没有防溢出）<br>
 NX:NX enabled（不可执行的）<br>
@@ -523,13 +523,13 @@ PIE:No PIE（未使用随机地址）</p>
 <h2 id="3-利用ida进行反编译"><a class="markdownIt-Anchor" href="#3-利用ida进行反编译">#</a> 3 利用 IDA 进行反编译</h2>
 <p>如上图，该程序为 32 位程序，可使用 IDA Pro (x32) 打开。</p>
 <p>在 FunctionsWindow 中找到 main 函数</p>
-<p><img src="image-20221222160417648.png" class="lazyload placeholder" data-srcset="image-20221222160417648.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222160417648"></p>
+<p><img src="/.io//image-20221222160417648.png" class="lazyload placeholder" data-srcset="/.io//image-20221222160417648.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222160417648"></p>
 <p>点进去，按 F5 进行反汇编</p>
-<p><img src="image-20221222160546348.png" class="lazyload placeholder" data-srcset="image-20221222160546348.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222160546348"></p>
+<p><img src="/.io//image-20221222160546348.png" class="lazyload placeholder" data-srcset="/.io//image-20221222160546348.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222160546348"></p>
 <p>其中，setvbuf () 函数相当于对文件流的规定，对文件进行操作，需要将磁盘中的文件写入内存中，相应的会在内存区建立一个缓存区用于与磁盘交换数据。stdout 是屏幕输出设备，stdin 是键盘输入设备，在开机时自动打开，相当于将缓存区清 0，可以做到及时输入输出，不会等到缓存区写满后才引入结果，对此不需要深究。详细自行搜索，puts () 输出字符串，发现 pwnme () 函数，双击查看其定义。</p>
-<p><img src="image-20221222160659573.png" class="lazyload placeholder" data-srcset="image-20221222160659573.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222160659573"></p>
+<p><img src="/.io//image-20221222160659573.png" class="lazyload placeholder" data-srcset="/.io//image-20221222160659573.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222160659573"></p>
 <p>双击 fgets ()：</p>
-<p><img src="image-20221222160811550.png" class="lazyload placeholder" data-srcset="image-20221222160811550.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222160811550"></p>
+<p><img src="/.io//image-20221222160811550.png" class="lazyload placeholder" data-srcset="/.io//image-20221222160811550.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222160811550"></p>
 <p>意义不明，其实是调用的库函数，自行百度即可（上文的 setvbuf () 也是库函数）<br>
 百度得到 fgets () 相当于对数组 s, 从 stdin 文件中输入 50 个字节，注意 char s 的长度为 9，但却输入了 50 个字节，未对输入字节正确控制导致栈溢出，可通过这个漏洞干一票大的。</p>
 <blockquote>
@@ -548,18 +548,18 @@ PIE:No PIE（未使用随机地址）</p>
 </li>
 </ul>
 <p>Shift + F12 进入 IDA 字符串界面，发现 &quot;/bin/sh&quot;</p>
-<p><img src="image-20221222161611636.png" class="lazyload placeholder" data-srcset="image-20221222161611636.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222161611636"></p>
+<p><img src="/.io//image-20221222161611636.png" class="lazyload placeholder" data-srcset="/.io//image-20221222161611636.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222161611636"></p>
 <blockquote>
 <p>服务器一般架设在 Linux 内核之上，对于 Linux 来说一切都是文件的存在，而 /bin 存储了许多系统可执行文件目录：cat,mv,date…<br>
 /bin/sh 就是 Bourne shell</p>
 </blockquote>
 <p>双击跳转</p>
-<p><img src="image-20221222161700413.png" class="lazyload placeholder" data-srcset="image-20221222161700413.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222161700413"></p>
+<p><img src="/.io//image-20221222161700413.png" class="lazyload placeholder" data-srcset="/.io//image-20221222161700413.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222161700413"></p>
 <p>在根据右边 stack+9↑o 双击后跳转至相应的 stack 处并反编译</p>
-<p><img src="image-20221222161735914.png" class="lazyload placeholder" data-srcset="image-20221222161735914.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222161735914"></p>
+<p><img src="/.io//image-20221222161735914.png" class="lazyload placeholder" data-srcset="/.io//image-20221222161735914.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222161735914"></p>
 <p>看见了 stack () 函数调用了 system (&quot;/bin/sh&quot;), 于是我们可以通过栈溢出跳转至这里并执行。<br>
 既然要跳转至 stack ()，我们相对应的也要知道其首地址，拉大 FunctionWindows 后可以看见</p>
-<p><img src="image-20221222161810737.png" class="lazyload placeholder" data-srcset="image-20221222161810737.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222161810737"></p>
+<p><img src="/.io//image-20221222161810737.png" class="lazyload placeholder" data-srcset="/.io//image-20221222161810737.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222161810737"></p>
 <p>stack () 函数起始地址为 0804850F</p>
 <h2 id="4-编写exp"><a class="markdownIt-Anchor" href="#4-编写exp">#</a> 4 编写 exp</h2>
 <p>在 Linux 下提前安装好 pwntools</p>
@@ -579,8 +579,8 @@ main<span class="token punctuation">(</span><span class="token punctuation">)</s
 当然官方的说明才是最好最全的，但是刚入门就简单了解一下看看文章即可（注意要博彩多家）</p>
 </blockquote>
 <p>运行该程序：</p>
-<p><img src="image-20221222163133949.png" class="lazyload placeholder" data-srcset="image-20221222163133949.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222163133949"></p>
-<p><img src="image-20221222163213144.png" class="lazyload placeholder" data-srcset="image-20221222163213144.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222163213144"></p>
+<p><img src="/.io//image-20221222163133949.png" class="lazyload placeholder" data-srcset="/.io//image-20221222163133949.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222163133949"></p>
+<p><img src="/.io//image-20221222163213144.png" class="lazyload placeholder" data-srcset="/.io//image-20221222163213144.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222163213144"></p>
 <p>注意：连接上一段时间后会自动断掉连接，此时再次执行脚本即可，所以手脚快一点。</p>
 
       </div>
