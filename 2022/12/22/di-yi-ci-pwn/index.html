@@ -511,17 +511,16 @@
     <article class="post post-detail">
       <div class="post-content">
         <h1 id="以ctfshow-pwn02为例"><a class="markdownIt-Anchor" href="#以ctfshow-pwn02为例">#</a> 以 ctfshow Pwn02 为例</h1>
-<p>[toc]</p>
-<h2 id="1-查壳"><a class="markdownIt-Anchor" href="#1-查壳">#</a> #1 查壳</h2>
+<h2 id="1-查壳"><a class="markdownIt-Anchor" href="#1-查壳">#</a> 1 查壳</h2>
 <p>利用 exeinfope 软件进行查壳，但本题是道入门题，并不需要查壳。（<s>才不是因为没下载呢。</s>）</p>
-<h2 id="2-检测安全机制"><a class="markdownIt-Anchor" href="#2-检测安全机制">#</a> #2 检测安全机制</h2>
+<h2 id="2-检测安全机制"><a class="markdownIt-Anchor" href="#2-检测安全机制">#</a> 2 检测安全机制</h2>
 <p>利用 checksec + [filename] 进行检测（[checksec 简单讲解](<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/31449fdfe35f">Checksec - 简书 (jianshu.com)</a>)）</p>
 <p><img src="%E7%AC%AC%E4%B8%80%E6%AC%A1Pwn.assets/image-20221222155505271.png" class="lazyload placeholder" data-srcset="%E7%AC%AC%E4%B8%80%E6%AC%A1Pwn.assets/image-20221222155505271.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222155505271"></p>
 <p>简单地说：</p>
 <p>Stack：No canary found（没有防溢出）<br>
 NX:NX enabled（不可执行的）<br>
 PIE:No PIE（未使用随机地址）</p>
-<h2 id="3-利用ida进行反编译"><a class="markdownIt-Anchor" href="#3-利用ida进行反编译">#</a> #3 利用 IDA 进行反编译</h2>
+<h2 id="3-利用ida进行反编译"><a class="markdownIt-Anchor" href="#3-利用ida进行反编译">#</a> 3 利用 IDA 进行反编译</h2>
 <p>如上图，该程序为 32 位程序，可使用 IDA Pro (x32) 打开。</p>
 <p>在 FunctionsWindow 中找到 main 函数</p>
 <p><img src="%E7%AC%AC%E4%B8%80%E6%AC%A1Pwn.assets/image-20221222160417648.png" class="lazyload placeholder" data-srcset="%E7%AC%AC%E4%B8%80%E6%AC%A1Pwn.assets/image-20221222160417648.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222160417648"></p>
@@ -539,7 +538,7 @@ PIE:No PIE（未使用随机地址）</p>
 可能造成栈溢出的函数有：gets, fgets, scanf, vscanf, sprintf, strcpy, strcat, bcopy<br>
  摘自某大佬博客</p>
 </blockquote>
-<p>双击 s，跳转到其对应栈段，发现在 + 00000004 处出现 ==<strong>r</strong>==，这个 r 就是 ret（<a target="_blank" rel="noopener" href="https://blog.csdn.net/striver1205/article/details/25695437">Push, Pop, call, leave 和 Ret 指令图解</a>）我们可以通过输入 9 字节占满 s 的大小，然后 + 4 覆盖 ret，让其返回到我们想要到的地方（轻则破坏程序，重则得到 shell）。</p>
+<p>双击 s，跳转到其对应栈段，发现在 + 00000004 处出现<strong> r</strong>，这个 r 就是 ret（<a target="_blank" rel="noopener" href="https://blog.csdn.net/striver1205/article/details/25695437">Push, Pop, call, leave 和 Ret 指令图解</a>）我们可以通过输入 9 字节占满 s 的大小，然后 + 4 覆盖 ret，让其返回到我们想要到的地方（轻则破坏程序，重则得到 shell）。</p>
 <ul>
 <li>
 <p>为什么能做到这一点呢，就是因为栈的性质，栈是从高地址向下的，故从 - 00000009 开始向下 + 00000000 (此处为相对位置) 存储，由于未作出合理限制输入，故可以继续覆盖低地址中存储，ret 因此被覆盖。</p>
@@ -562,7 +561,7 @@ PIE:No PIE（未使用随机地址）</p>
 既然要跳转至 stack ()，我们相对应的也要知道其首地址，拉大 FunctionWindows 后可以看见</p>
 <p><img src="%E7%AC%AC%E4%B8%80%E6%AC%A1Pwn.assets/image-20221222161810737.png" class="lazyload placeholder" data-srcset="%E7%AC%AC%E4%B8%80%E6%AC%A1Pwn.assets/image-20221222161810737.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image-20221222161810737"></p>
 <p>stack () 函数起始地址为 0804850F</p>
-<h2 id="4-编写exp"><a class="markdownIt-Anchor" href="#4-编写exp">#</a> #4 编写 exp</h2>
+<h2 id="4-编写exp"><a class="markdownIt-Anchor" href="#4-编写exp">#</a> 4 编写 exp</h2>
 <p>在 Linux 下提前安装好 pwntools</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> pwn <span class="token keyword">import</span> <span class="token operator">*</span>
 <span class="token keyword">def</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
